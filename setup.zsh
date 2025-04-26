@@ -1,18 +1,19 @@
 #!/opt/homebrew/bin/zsh
 
-# Install Bedrock
-composer create-project roots/bedrock .
+# Exit immediately on error
+set -e
 
 # Copy and configure environment
-cp .env.example .env
+cp -n .env.example .env || echo ".env already exists"
 sed -i '' 's/database_name/wordpress/' .env
 sed -i '' 's/database_user/wordpress/' .env
 sed -i '' 's/database_password/secret/' .env
 
-# Setup Sage theme
-cd web/app/themes
-composer create-project roots/sage impetus
+# Install Bedrock dependencies
+composer install
 
-cd impetus
+# Setup Sage theme dependencies
+cd web/app/themes/impetus
+
 composer install
 npm install
