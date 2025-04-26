@@ -1,0 +1,31 @@
+{
+    "name": "cappypopp/wordpress-bedrock-impetus-starter",
+    "type": "project",
+    "license": "MIT",
+    "description": "Full WordPress Bedrock Starter with Sage (impetus) theme",
+    "scripts": {
+        "lint": "find web/app -name '*.php' -exec php -l {} \\;",
+        "test": "echo 'No unit tests configured yet.'"
+    },
+    "require": {
+        "php": "^8.0",
+        "composer/installers": "^2.2",
+        "vlucas/phpdotenv": "^5.4",
+        "roots/bedrock": "^2.0"
+    },
+    "extra": {
+        "installer-paths": {
+            "web/app/mu-plugins/{$name}/": [
+                "type:wordpress-muplugin"
+            ],
+            "web/app/plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ],
+            "web/app/themes/{$name}/": [
+                "type:wordpress-theme"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
