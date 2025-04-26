@@ -3,10 +3,12 @@
     "type": "project",
     "license": "MIT",
     "description": "Full WordPress Bedrock Starter with Sage (impetus) theme",
-    "scripts": {
-        "lint": "find web/app -name '*.php' -exec php -l {} \\;",
-        "test": "echo 'No unit tests configured yet.'"
-    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/roots/bedrock"
+        }
+    ],
     "require": {
         "php": "^8.0",
         "composer/installers": "^2.2",
@@ -26,6 +28,6 @@
             ]
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
