@@ -13,7 +13,7 @@
         "php": "^8.0",
         "composer/installers": "^2.2",
         "vlucas/phpdotenv": "^5.4",
-        "roots/bedrock": "^2.0"
+        "roots/bedrock": "^1.0"
     },
     "extra": {
         "installer-paths": {
