@@ -18,6 +18,8 @@ jobs:
           php-version: 8.2
       - name: Install Composer deps
         run: composer install
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
       - name: Lint PHP
         run: composer run-script lint
       - name: Run PHPUnit tests
