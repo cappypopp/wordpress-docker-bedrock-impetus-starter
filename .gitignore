@@ -1,0 +1,6 @@
+/vendor/
+/node_modules/
+/web/wp/
+/web/app/uploads/
+/docker/certs/*
+.env
