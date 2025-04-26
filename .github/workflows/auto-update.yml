@@ -1,0 +1,44 @@
+name: Auto Update Composer Packages
+
+on:
+  schedule:
+    - cron: '0 3 * * 1' # Every Monday at 3AM UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: Install Composer
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Update Composer Packages
+        run: composer update --no-interaction --prefer-dist
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit Changes
+        run: |
+          git add composer.lock
+          git commit -m "chore(deps): Weekly composer update [automated]" || echo "No changes to commit"
+          git push origin HEAD:update/composer-updates
+
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: update/composer-updates
+          destination_branch: main
+          pr_title: "🔄 Weekly Composer Dependency Update"
+          pr_body: "This PR updates Composer dependencies automatically."
+          github_token: ${{ secrets.GITHUB_TOKEN }}
