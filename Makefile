@@ -27,6 +27,9 @@ up:
 down:
 	docker-compose down
 
+deploy:
+	./scripts/deploy.zsh
+
 docker-info:
 	@echo "\033[1;32m\n----STATUS------------------------------------\n\033[0m"
 	@docker ps --format "table {{.Names}}\t{{.Status}}"
