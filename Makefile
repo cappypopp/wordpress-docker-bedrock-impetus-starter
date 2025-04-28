@@ -53,6 +53,9 @@ dev:
 setup:
 	./setup.zsh
 
+clear-caches:
+	./scripts/clear-caches.zsh
+
 wp-admin-pw-reset:
 	./scripts/wp-admin-pw-reset.zsh
 
