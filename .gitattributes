@@ -1,4 +1,8 @@
-# Auto normalize line endings for all text files
+# ✅ Now your Git diffs won't break across Mac/Linux/Windows.
+
+# ✅ GitHub also won't count cache/ junk as "language stats."
+
+# # Auto normalize line endings for all text files
 * text=auto
 
 # Force LF line endings for specific files
