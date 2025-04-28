@@ -1,38 +1,81 @@
-# ignore all files starting with ., ~, or __
-.*
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnail cache files
+._*
 ~*
-__*
 
-# ignore all files in the vendor directory
-/vendor/
+# macOS folder attributes
+.Spotlight-V100
+.Trashes
 
-# ignore all files in the node_modules directory
-/node_modules/
+# Icon files
+Icon?
 
-# ignore all files in the web/wp directory
-/web/wp/
-/web/app/cache/
-/web/app/uploads/
-/docker/certs/*
+# Mac metadata files
+ehthumbs.db
+Thumbs.db
+
+# === Bedrock WordPress structure ===
 .env
+.env.*
+/vendor/
+/composer.lock
+/web/app/uploads/
+/web/app/cache/
+/web/app/mu-plugins/*
 
-# -------------------------
-# BEGIN Whitelisted Files
-# -------------------------
+# Ignore WordPress core if you manage it via Composer
+/web/wp/
+/web/.htaccess
 
-# gitea actions
-!.gitea/
-!.github/
-!.vscode/
+# === Sage theme (inside web/app/themes/[your-theme]) ===
+# If inside theme:
+resources/assets/*
+!resources/assets/**/*.{js,jsx,ts,tsx,vue,scss,sass,css,less,styl,html}
+resources/scripts
+resources/styles
+public/build/
+public/hot
+node_modules/
+yarn-error.log
+npm-debug.log
+pnpm-debug.log
+vite.config.js
 
-# track these files, if they exist
-!.gitignore
-!.eslint*
-!.deployignore
-!.wpe-rsync-dont-deploy-these.txt
-!.editorconfig
-!README.md
-!CHANGELOG.md
-!package*.json
-!gulpfile.js
-!.eslintrc.json
+# Vite-specific (frontend assets)
+/web/app/themes/**/node_modules/
+/web/app/themes/**/public/build/
+/web/app/themes/**/dist/
+/web/app/themes/**/.vitepress/cache/
+/web/app/themes/**/vite.config.js
+
+# === Editor / IDE files ===
+.idea/
+.vscode/
+*.code-workspace
+
+# === Docker / Local Dev Files ===
+docker-compose.override.yml
+docker-compose.local.yml
+.docker/
+docker/certs/*
+logs/
+tmp/
+
+# === Backup Files ===
+*.bak
+*.tmp
+*.swp
+*.swo
+
+# === Miscellaneous ===
+*.log
+*.pid
+*.seed
+*.backup
+*.orig
+*.old
+*.save
