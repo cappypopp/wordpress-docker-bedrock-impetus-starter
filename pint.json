@@ -14,8 +14,6 @@
     "*.min.css"
   ],
   "rules": {
-    "no_unused_imports": false,
-    "no_unused_variables": false,
-    "no_unused_private_class_members": false
+    "no_unused_imports": false
   }
 }
