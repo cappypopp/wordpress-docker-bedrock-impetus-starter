@@ -24,6 +24,10 @@ echo "${BLUE}🎨 Building Sage assets (Vite, Tailwind)...${NC}"
 make dev
 
 echo ""
+echo "${BLUE}📦 Set Up WordPress${NC}"
+make initial-wp-setup
+
+echo ""
 echo "${YELLOW}🔒 Reminder: Check on WordPress admin password and reset using /scripts/wp-admin-pw-reset.zsh${NC}"
 echo "You MUST set your password in .env before running this script!"
 make reset-password
