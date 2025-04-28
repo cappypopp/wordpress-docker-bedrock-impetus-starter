@@ -7,7 +7,14 @@
     "web/app/themes/twentytwentyfive",
     "vendor",
     "node_modules",
-    "web/app/themes/sage/public"
+    "web/app/themes/sage/public",
+    "config",
+    "web/app/cache",
+    "web/app/languages",
+    "web/app/mu-plugins",
+    "web/index.php",
+    "web/wp-config.php",
+    "web"
   ],
   "notName": [
     "*.min.js",
