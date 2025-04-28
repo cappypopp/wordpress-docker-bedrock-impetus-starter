@@ -4,6 +4,19 @@
     "web/wp",
     "web/app/mu-plugins/bedrock-disallow-indexing",
     "web/app/plugins",
-    "web/app/themes/twentytwentyfive"
-  ]
+    "web/app/themes/twentytwentyfive",
+    "vendor",
+    "node_modules"
+  ],
+  "notName": [
+    "*.min.js",
+    "*.min.css"
+  ],
+  "finder": {
+    "in": ["web/app/themes", "web/app/mu-plugins"],
+    "exclude": [
+      "web/app/themes/twentytwentyfive",
+      "web/app/mu-plugins/bedrock-disallow-indexing"
+    ]
+  }
 }
