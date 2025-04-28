@@ -21,6 +21,20 @@ jobs:
           else
             echo "✅ All commits are signed!"
           fi
+      - name: Check .gitignore syntax
+        run: |
+          if grep -P '[\r]' .gitignore; then
+            echo "❌ ERROR: .gitignore contains Windows-style line endings (CRLF). Use LF only."
+            exit 1
+          fi
+
+      - name: Validate .gitignore exists and is non-empty
+        run: |
+          if [ ! -s ".gitignore" ]; then
+            echo "❌ ERROR: .gitignore is missing or empty!"
+            exit 1
+          fi
+          echo "✅ .gitignore looks good."
       - uses: actions/checkout@v4
       - name: Install PHP
         uses: shivammathur/setup-php@v2
