@@ -71,6 +71,11 @@ add_action('after_setup_theme', function () {
     remove_theme_support('block-templates');
 
     /**
+     * Enable admin bar
+     */
+    add_theme_support('admin-bar', ['callback' => '__return_true']);
+
+    /**
      * Register the navigation menus.
      *
      * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
@@ -153,3 +158,16 @@ add_action('widgets_init', function () {
         'id' => 'sidebar-footer',
     ] + $config);
 });
+
+/**
+ * Enqueue theme assets.
+ *
+ * @return void
+ */
+add_action('wp_enqueue_scripts', function () {
+    // Enqueue your main stylesheet
+    wp_enqueue_style('impetus/app.css', Vite::asset('resources/css/app.css'), false, null);
+
+    // Enqueue your main JS file
+    wp_enqueue_script('impetus/app.js', Vite::asset('resources/js/app.js'), ['jquery'], null, true);
+}, 100);
