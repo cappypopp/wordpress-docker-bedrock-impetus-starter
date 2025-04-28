@@ -54,7 +54,10 @@ dev:
 	npm --prefix web/app/themes/impetus run dev
 
 setup:
-	./setup.zsh
+	./scripts/setup.zsh
+
+initial-wp-setup:
+	./scripts/initial-wp-setup.zsh
 
 clear-caches:
 	./scripts/clear-caches.zsh
@@ -65,3 +68,11 @@ wp-admin-pw-reset:
 # SSL cert generation (optional bonus)
 ssl-cert:
 	cd docker/certs && mkcert localhost && mv localhost.pem localhost.crt && mv localhost-key.pem localhost.key
+
+# Example of a target that calls other targets
+fresh-start:
+	$(MAKE) down
+	$(MAKE) docker-clean
+	$(MAKE) full-rebuild
+	$(MAKE) install
+	$(MAKE) initial-wp-setup
