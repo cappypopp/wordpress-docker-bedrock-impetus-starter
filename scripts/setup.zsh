@@ -24,8 +24,13 @@ echo "${BLUE}🎨 Building Sage assets (Vite, Tailwind)...${NC}"
 make dev
 
 echo ""
-echo "${YELLOW}🔒 Reminder: Check on WordPress admin password and reset if needed using /scripts/wp-admin-pw-reset.zsh${NC}"
-# make reset-password
+echo "${YELLOW}🔒 Reminder: Check on WordPress admin password and reset using /scripts/wp-admin-pw-reset.zsh${NC}"
+echo "You MUST set your password in .env before running this script!"
+make reset-password
+
+echo ""
+echo "${BLUE}🔒 Create SSL certificates and add them to the project${NC}"
+make ssl-cert
 
 echo ""
 echo "${MAGENTA}🎉 Setup complete! Visit: ${GREEN}https://localhost:8443${NC}"
