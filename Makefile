@@ -76,3 +76,4 @@ fresh-start:
 	$(MAKE) full-rebuild
 	$(MAKE) install
 	$(MAKE) initial-wp-setup
+	$(MAKE) dev
