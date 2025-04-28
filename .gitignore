@@ -1,6 +1,38 @@
+# ignore all files starting with ., ~, or __
+.*
+~*
+__*
+
+# ignore all files in the vendor directory
 /vendor/
+
+# ignore all files in the node_modules directory
 /node_modules/
+
+# ignore all files in the web/wp directory
 /web/wp/
+/web/app/cache/
 /web/app/uploads/
 /docker/certs/*
 .env
+
+# -------------------------
+# BEGIN Whitelisted Files
+# -------------------------
+
+# gitea actions
+!.gitea/
+!.github/
+!.vscode/
+
+# track these files, if they exist
+!.gitignore
+!.eslint*
+!.deployignore
+!.wpe-rsync-dont-deploy-these.txt
+!.editorconfig
+!README.md
+!CHANGELOG.md
+!package*.json
+!gulpfile.js
+!.eslintrc.json
