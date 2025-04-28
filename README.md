@@ -1,61 +1,129 @@
-<p align="center">
-  <a href="https://roots.io/bedrock/">
-    <img alt="Bedrock" src="https://cdn.roots.io/app/uploads/logo-bedrock.svg" height="100">
-  </a>
-</p>
+# Custom WordPress Site Based on Roots Bedrock using Sage Theme and Vite
 
-<p align="center">
-  <a href="https://packagist.org/packages/roots/bedrock">
-    <img alt="Packagist Installs" src="https://img.shields.io/packagist/dt/roots/bedrock?label=projects%20created&colorB=2b3072&colorA=525ddc&style=flat-square">
-  </a>
+## Notes
 
-  <a href="https://packagist.org/packages/roots/wordpress">
-    <img alt="roots/wordpress Packagist Downloads" src="https://img.shields.io/packagist/dt/roots/wordpress?label=roots%2Fwordpress%20downloads&logo=roots&logoColor=white&colorB=2b3072&colorA=525ddc&style=flat-square">
-  </a>
+### Bedrock
 
-  <img src="https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/roots/bedrock/master/composer.json&label=wordpress&logo=roots&logoColor=white&query=$.require[%22roots/wordpress%22]&colorB=2b3072&colorA=525ddc&style=flat-square">
+Bedrock is a WordPress boilerplate from Roots that:
 
-  <a href="https://github.com/roots/bedrock/actions/workflows/ci.yml">
-    <img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/roots/bedrock/ci.yml?branch=master&logo=github&label=CI&style=flat-square">
-  </a>
+- Uses Composer to manage WordPress, plugins, and themes as PHP packages
+- Moves WordPress core out of the web root (/web)
+- Provides 12-Factor App structure: clean .env for configs (like Laravel)
+- Makes deployment, security, and environment management way cleaner
+- WordPress lives in /web/wp
+- Your content (themes, plugins) lives in /web/app
+- Config files are clean and environment-specific
 
-  <a href="https://twitter.com/rootswp">
-    <img alt="Follow Roots" src="https://img.shields.io/badge/follow%20@rootswp-1da1f2?logo=twitter&logoColor=ffffff&message=&style=flat-square">
-  </a>
-</p>
+| Bedrock Benefit            | Why It Matters                                                                  |
+| -------------------------- | ------------------------------------------------------------------------------- |
+| Composer-powered           | Update WordPress core, plugins, themes with version control                     |
+| Secure folder structure    | No direct access to wp-config.php, WordPress code is outside /web public folder |
+| .env environment variables | No more hardcoding DB credentials — easily switch between dev/stage/prod        |
+| Cleaner deployments        | Git repositories stay lean, no need to commit plugins or WP itself              |
+| Modern dev workflow        | Like Laravel, Symfony, Django apps                                              |
+| Team collaboration         | Everyone installs the exact same setup via composer install                     |
+| Easy CI/CD                 | Pull the repo, run composer install, and it’s deployed cleanly                  |
 
-<p align="center">WordPress boilerplate with Composer, easier configuration, and an improved folder structure</p>
+### Sage
 
-<p align="center">
-  <a href="https://roots.io/bedrock/">Website</a> &nbsp;&nbsp; <a href="https://roots.io/bedrock/docs/installation/">Documentation</a> &nbsp;&nbsp; <a href="https://github.com/roots/bedrock/releases">Releases</a> &nbsp;&nbsp; <a href="https://discourse.roots.io/">Community</a>
-</p>
+- You can still create a child from Sage later, but usually not needed.
+- Sage is NOT a child theme. It's a standalone theme that replaces both parent
+  and child.
 
-## Sponsors
+### Environment Breakdown
 
-Bedrock is an open source project and completely free to use. If you've benefited from our projects and would like to support our future endeavors, please consider [sponsoring Roots](https://github.com/sponsors/roots).
+| Bedrock                                    | Sage                                          | Vite                                        |
+| ------------------------------------------ | --------------------------------------------- | ------------------------------------------- |
+| Project structure + environment management | WordPress theme (frontend + Blade templating) | Frontend bundler (JS/SCSS hot reload)       |
+| Manages WordPress + plugins via Composer   | Lives inside /web/app/themes/sage-theme       | Runs inside Sage (via Bud/Vite integration) |
+| .env config (DB, URLs)                     | Custom theme + Tailwind CSS, Blade templates  | Dev server for super-fast local dev         |
 
-<div align="center">
-<a href="https://carrot.com/"><img src="https://cdn.roots.io/app/uploads/carrot.svg" alt="Carrot" width="120" height="90"></a> <a href="https://wordpress.com/"><img src="https://cdn.roots.io/app/uploads/wordpress.svg" alt="WordPress.com" width="120" height="90"></a> <a href="https://worksitesafety.ca/careers/"><img src="https://cdn.roots.io/app/uploads/worksite-safety.svg" alt="Worksite Safety" width="120" height="90"></a> <a href="https://www.itineris.co.uk/"><img src="https://cdn.roots.io/app/uploads/itineris.svg" alt="Itineris" width="120" height="90"></a> <a href="https://bonsai.so/"><img src="https://cdn.roots.io/app/uploads/bonsai.svg" alt="Bonsai" width="120" height="90"></a>
-</div>
+## Initial Setup
+
+- ensure `mkcert` is installed (`brew install mkcert` on Mac)
+- ensure you have a signing key set up in GitHub (I use 1Password:
+  https://developer.1password.com/docs/ssh/git-commit-signing/)
+- run ./setup.zsh
+- It will:
+  - create an .env file from .env.example if not present
+  - sets default database credentials
+  - `composer install`
+  - `cd web/app/themes/impetus && composer install`
+  - `cd web/app/themes/impetus && npm install`
+  - `docker-compose down`
+  - `docker-compose build --no-cache`
+  - `docker-compose up -d`
+  - `npm --prefix web/app/themes/impetus run dev`
+  - resets wordpress username and password to one in .env
+  - builds SSL certificates using mkcert (mkcert MUST BE INSTALLED!) and copies
+    to docker
+- 🔒 YOU MUST Generate your WordPress authentication keys and salts here:
+  https://roots.io/salts.html and put them in the .env file!
 
 ## Overview
 
-Bedrock is a WordPress boilerplate for developers that want to manage their projects with Git and Composer. Much of the philosophy behind Bedrock is inspired by the [Twelve-Factor App](http://12factor.net/) methodology, including the [WordPress specific version](https://roots.io/twelve-factor-wordpress/).
+1. **Local Development Setup:**
 
-- Better folder structure
-- Dependency management with [Composer](https://getcomposer.org)
-- Easy WordPress configuration with environment specific files
-- Environment variables with [Dotenv](https://github.com/vlucas/phpdotenv)
-- Autoloader for mu-plugins (use regular plugins as mu-plugins)
+- Make sure Docker is running (since you're using Docker)
+- Run docker-compose up -d (or `make up`) to start your containers
+- Access your site at http://localhost:8443 (or whatever port you've configured)
 
-## Getting Started
+2. **Theme Development (Sage):**
 
-See the [Bedrock installation documentation](https://roots.io/bedrock/docs/installation/).
+- Navigate to web/app/themes/your-theme-name
+- Run npm install to install theme dependencies (or use `make install`)
+- Run npm run dev to start the Vite development server (or use `make dev`)
+- This will give you:
+  - Hot Module Replacement (HMR)
+  - Live reloading
+  - Source maps
+  - Development optimizations
 
-## Stay Connected
+3. **WordPress Development:**
 
-- Join us on Discord by [sponsoring us on GitHub](https://github.com/sponsors/roots)
-- Participate on [Roots Discourse](https://discourse.roots.io/)
-- Follow [@rootswp on Twitter](https://twitter.com/rootswp)
-- Read the [Roots Blog](https://roots.io/blog/)
-- Subscribe to the [Roots Newsletter](https://roots.io/newsletter/)
+- Access WordPress admin at http://localhost/wp/wp-admin
+- Set up your theme in WordPress
+- Create necessary pages/posts
+- Install required plugins
+
+4. **Development Workflow:**
+
+- Create new templates in resources/views
+- Add styles in resources/styles
+- Add JavaScript in resources/scripts
+- Use Blade templating for PHP
+- Use Tailwind CSS (if configured) for styling
+- Use Alpine.js (if configured) for interactivity
+
+5. **Building for Production:**
+
+- Run yarn build or npm run build to create production assets
+- This will:
+  - Minify CSS/JS
+  - Optimize images
+  - Generate production-ready assets
+
+6. **Version Control:**
+
+- Commit your changes
+- Push to your repository
+- CI pipeline will run tests and linting
+- Requirements
+  - ci.yml will run on commits to remote repos
+  - commits must be signed
+  - .gitignore must be present and well-formed
+  - PHP linting (via pint --test) must succeed
+  - PHP Unit Tests - if any - must succeed
+
+7. **Deployment:**
+
+- Deploy to your staging/production environment
+- Run `make deploy`
+- Make sure to set proper environment variables
+
+## Key directories to work with:
+
+- web/app/themes/your-theme-name/resources/ - Your source files
+- web/app/themes/your-theme-name/public/ - Compiled assets
+- web/app/themes/your-theme-name/resources/views/ - Blade templates
+- web/app/themes/your-theme-name/resources/functions.php - Theme functions
