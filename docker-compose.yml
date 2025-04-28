@@ -5,9 +5,14 @@ services:
     build: ./docker/php
     volumes:
       - .:/var/www/html
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    ports:
+      - "9010:9010"
+    environment:
+      - XDEBUG_MODE=debug
+      - XDEBUG_CLIENT_PORT=9010
     depends_on:
       - db
-
   nginx:
     image: nginx:latest
     ports:

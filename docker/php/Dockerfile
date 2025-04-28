@@ -5,6 +5,10 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure zip \
     && docker-php-ext-install pdo_mysql mysqli zip gd
 
+# Install Xdebug
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
