@@ -74,6 +74,7 @@ fresh-start:
 	$(MAKE) down
 	$(MAKE) docker-clean
 	$(MAKE) full-rebuild
+	sleep 10  # Wait for WordPress to initialize
 	$(MAKE) install
 	$(MAKE) initial-wp-setup
 	$(MAKE) dev
