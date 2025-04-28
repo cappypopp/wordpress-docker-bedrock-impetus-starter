@@ -31,12 +31,13 @@ docker exec -it "$PHP_CONTAINER" wp core install \
     --admin_user="$ADMIN_USER" \
     --admin_password="$ADMIN_PASSWORD" \
     --admin_email="$ADMIN_EMAIL" \
-    --skip-email
-
+    --path="/var/www/html/web/wp" \
+    --skip-email \
+    --allow-root
 # Setup Plugins like ACF Pro for example
 # docker exec -it "$PHP_CONTAINER" wp plugin install acf --activate
 
 # Activate the theme
-docker exec -it "$PHP_CONTAINER" wp theme activate "$THEME_NAME"
+docker exec -it "$PHP_CONTAINER" wp theme activate "$THEME_NAME" --path="/var/www/html/web/wp" --allow-root
 
 echo "✅ WordPress setup complete!"
