@@ -1,22 +1,21 @@
 {
-  "preset": "per",
+  "preset": "laravel",
   "exclude": [
     "web/wp",
     "web/app/mu-plugins/bedrock-disallow-indexing",
     "web/app/plugins",
     "web/app/themes/twentytwentyfive",
     "vendor",
-    "node_modules"
+    "node_modules",
+    "web/app/themes/sage/public"
   ],
   "notName": [
     "*.min.js",
     "*.min.css"
   ],
-  "finder": {
-    "in": ["web/app/themes", "web/app/mu-plugins"],
-    "exclude": [
-      "web/app/themes/twentytwentyfive",
-      "web/app/mu-plugins/bedrock-disallow-indexing"
-    ]
+  "rules": {
+    "no_unused_imports": false,
+    "no_unused_variables": false,
+    "no_unused_private_class_members": false
   }
 }
