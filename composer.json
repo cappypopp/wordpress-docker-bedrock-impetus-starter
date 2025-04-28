@@ -65,6 +65,7 @@
   },
   "scripts": {
     "lint": "pint --test",
-    "lint:fix": "pint"
+    "lint:fix": "pint",
+    "test": "echo 'No tests configured yet.'"
   }
 }
