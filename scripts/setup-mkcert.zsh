@@ -10,11 +10,20 @@ fi
 if ! command -v mkcert &>/dev/null; then
     echo "mkcert is not installed. Installing..."
     brew install mkcert
+    echo "if you intend to use Firefox, you need to install the nss brew package as well!"
 fi
 
-mkcert -install
-mkcert -key-file docker/certs/localhost-key.pem -cert-file docker/certs/localhost.pem 'localhost' '*.localhost'
+# Create certs directory if it doesn't exist
+mkdir -p docker/certs
 
-# Bedrock expects these files to be named localhost.crt and localhost.key
-mv docker/certs/localhost.pem docker/certs/localhost.crt
-mv docker/certs/localhost-key.pem docker/certs/localhost.key
+# Install mkcert if not already installed
+mkcert -install
+
+# Generate localhost certificate
+mkcert -key-file docker/certs/localhost.key -cert-file docker/certs/localhost.crt 'localhost' '*.localhost'
+
+# Print success message
+echo "✅ mkcert setup complete!"
+echo "🔒 Your certificates are in docker/certs/"
+echo "🔒 You can now start your Docker containers with 'make up'"
+echo "🔒 Visit https://localhost:${WP_HTTPS_PORT} to access your site"
