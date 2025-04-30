@@ -9,7 +9,7 @@ echo "📦 Installing PHP dependencies optimized for production..."
 composer install --no-dev --optimize-autoloader
 
 echo "🎨 Building Sage assets for production..."
-cd web/app/themes/impetus
+cd web/app/themes/${WP_THEME_NAME}
 npm install
 npm run build
 

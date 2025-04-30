@@ -15,9 +15,9 @@ echo "🧹 Cleaning up any dangling images (optional)..."
 docker image prune -f
 
 echo "🧹 Cleaning node_modules and vendor (optional)..."
-rm -rf web/app/themes/impetus/node_modules
-rm -rf web/app/themes/impetus/vendor
-rm -rf web/app/themes/impetus/composer.lock
+rm -rf web/app/themes/${WP_THEME_NAME}/node_modules
+rm -rf web/app/themes/${WP_THEME_NAME}/vendor
+rm -rf web/app/themes/${WP_THEME_NAME}/composer.lock
 rm -rf vendor
 rm -f composer.lock
 
