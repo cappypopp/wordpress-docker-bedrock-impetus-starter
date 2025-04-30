@@ -69,7 +69,12 @@ Bedrock is a WordPress boilerplate from Roots that:
 1. **Local Development Setup:**
 
 - Make sure Docker is running (since you're using Docker)
-- Run `make fresh-start`. This will:
+- Run `./setup.zsh`
+  - This will copy the .env.example file to .env if it doesn't exist
+  - YOU MUST CUSTOMIZE .env LOCALLY
+  - It then calls `./scripts/setup.zsh` which runs the `make fresh-start` target
+    and sets up HTTPS certificates
+- Details of `make fresh-start`. This will:
   - shut down any running Docker containers for this project
   - prune and clean up docker
   - rebuild docker images
