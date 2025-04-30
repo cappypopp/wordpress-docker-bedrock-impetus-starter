@@ -59,14 +59,28 @@ Bedrock is a WordPress boilerplate from Roots that:
     to docker
 - 🔒 YOU MUST Generate your WordPress authentication keys and salts here:
   https://roots.io/salts.html and put them in the .env file!
+- YOU MUST set your .env file up - everything in the project uses/depends upon
+  it, except for:
+  - .vscode/launch.json: you need to hard-code your xdebug port number to match
+    what it is in .env
 
 ## Overview
 
 1. **Local Development Setup:**
 
 - Make sure Docker is running (since you're using Docker)
-- Run docker-compose up -d (or `make up`) to start your containers
-- Access your site at http://localhost:8443 (or whatever port you've configured)
+- Run `make fresh-start`. This will:
+  - shut down any running Docker containers for this project
+  - prune and clean up docker
+  - rebuild docker images
+  - start docker images
+  - run composer/npm install steps in the images
+  - wait for Wordpress to initialize
+  - run initial setup of WordPress using .env variables (so you don't have to
+    set up WordPress each time)
+  - run npm run dev to start vite server for hot reloading
+- Access your site at http://localhost:8443 (or whatever port you've configured
+  in WP_HTTPS_PORT in your .env file)
 
 2. **Theme Development (Sage):**
 
@@ -97,7 +111,7 @@ Bedrock is a WordPress boilerplate from Roots that:
 
 5. **Building for Production:**
 
-- Run yarn build or npm run build to create production assets
+- Run npm run build to create production assets
 - This will:
   - Minify CSS/JS
   - Optimize images
