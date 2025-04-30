@@ -1,34 +1,33 @@
-name: Nightly DB Backup
+name: Database Backup
 
 on:
   schedule:
-    - cron: "0 2 * * *" # Every night at 2AM UTC
-  workflow_dispatch:
+    - cron: '0 0 * * *'  # Run daily at midnight
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
-  db_backup:
+  backup:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      - name: Install Composer Dependencies
-        run: composer install
+      - name: Start Docker Compose
+        run: docker compose up -d db
+
+      - name: Wait for DB
+        run: sleep 15
 
       - name: Export Database
-        run: |
-          mkdir -p backup
-          docker-compose up -d db
-          sleep 15
-          docker-compose exec db /usr/bin/mysqldump -uwordpress -psecret wordpress > backup/db_backup.sql
+        run: ./scripts/backup-db.zsh
 
-      - name: Upload DB Backup Artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload Database Backup
+        uses: actions/upload-artifact@v3
         with:
-          name: db-backup
-          path: backup/db_backup.sql
+          name: database-backup
+          path: backup/
+          retention-days: 7
