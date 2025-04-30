@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "clean": "rm -rf node_modules package-lock.json",
     "translate": "npm run translate:pot && npm run translate:update",
     "translate:pot": "wp i18n make-pot . ./resources/lang/sage.pot --include=\"theme.json,patterns,app,resources\"",
     "translate:update": "for file in ./resources/lang/*.po; do wp i18n update-po ./resources/lang/sage.pot $file; done",
@@ -18,13 +19,13 @@
     "lint": "eslint resources/js/**/*.js --fix"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.1",
+    "@eslint/js": "^9.0.0",
     "@roots/vite-plugin": "^1.0.2",
-    "@tailwindcss/vite": "^4.0.9",
-    "eslint": "^9.25.1",
+    "@tailwindcss/vite": "^4.1.5",
+    "eslint": "^9.0.0",
     "husky": "^9.1.7",
     "laravel-vite-plugin": "^1.2.0",
-    "tailwindcss": "^4.0.9",
+    "tailwindcss": "^4.1.5",
     "vite": "^6.2.0"
   }
 }

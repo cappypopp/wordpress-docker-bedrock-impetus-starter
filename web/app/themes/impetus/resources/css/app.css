@@ -1,3 +1,8 @@
-@import "tailwindcss" theme(static);
-@source "../views/";
-@source "../../app/";
+@import "tailwindcss";
+
+@theme {
+    --color-brand-blue: #004F9F;
+    --color-brand-blue-dark: #000E4B;
+    --color-brand-blue-light: #D3E5FD;
+    --color-brand-blue-lighter: #EDF5FF;
+}
