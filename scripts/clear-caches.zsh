@@ -13,6 +13,6 @@ composer clear-cache
 
 # Optional: clear Vite build cache (if you ever cache builds)
 # echo "🧹 Clearing Vite build cache..."
-# rm -rf web/app/themes/impetus/public/build/
+# rm -rf web/app/themes/${WP_THEME_NAME}/public/build/
 
 echo "✅ All caches cleared!"
