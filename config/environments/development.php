@@ -24,7 +24,7 @@ Config::define('DISALLOW_FILE_MODS', false);
 /**
  * Debug Log Rotation
  */
-$debug_log = env('WP_DEBUG_LOG_PATH') ? env('WP_DEBUG_LOG_PATH') : dirname(ABSPATH) . '/web/app/debug.log';
+$debug_log = env('WP_DEBUG_LOG') ? env('WP_DEBUG_LOG') : dirname(ABSPATH) . '/web/app/debug.log';
 $max_log_size = env('WP_DEBUG_LOG_MAX_SIZE') ? (int)env('WP_DEBUG_LOG_MAX_SIZE') * 1024 * 1024 : 20 * 1024 * 1024; // Default 20MB
 $max_backup_age = env('WP_DEBUG_LOG_MAX_AGE') ? (int)env('WP_DEBUG_LOG_MAX_AGE') : 30; // Default 30 days
 
