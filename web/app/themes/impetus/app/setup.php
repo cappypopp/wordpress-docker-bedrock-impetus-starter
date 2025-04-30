@@ -165,9 +165,12 @@ add_action('widgets_init', function () {
  * @return void
  */
 add_action('wp_enqueue_scripts', function () {
+
+    $theme_name = env('WP_THEME_NAME', 'impetus'); // Fallback to 'impetus' if not set
+
     // Enqueue your main stylesheet
-    wp_enqueue_style('impetus/app.css', Vite::asset('resources/css/app.css'), false, null);
+    wp_enqueue_style("{$theme_name}/app.css", Vite::asset('resources/css/app.css'), false, null);
 
     // Enqueue your main JS file
-    wp_enqueue_script('impetus/app.js', Vite::asset('resources/js/app.js'), ['jquery'], null, true);
+    wp_enqueue_script("{$theme_name}/app.js", Vite::asset('resources/js/app.js'), ['jquery'], null, true);
 }, 100);
