@@ -66,6 +66,7 @@ logs/
 tmp/
 
 # === Backup Files ===
+backups/
 *.bak
 *.tmp
 *.swp
