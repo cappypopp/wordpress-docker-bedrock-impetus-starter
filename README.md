@@ -48,12 +48,12 @@ Bedrock is a WordPress boilerplate from Roots that:
   - create an .env file from .env.example if not present
   - sets default database credentials
   - `composer install`
-  - `cd web/app/themes/impetus && composer install`
-  - `cd web/app/themes/impetus && npm install`
+  - `cd web/app/themes/your-theme-name && composer install`
+  - `cd web/app/themes/your-theme-name && npm install`
   - `docker-compose down`
   - `docker-compose build --no-cache`
   - `docker-compose up -d`
-  - `npm --prefix web/app/themes/impetus run dev`
+  - `npm --prefix web/app/themes/your-theme-name run dev`
   - resets wordpress username and password to one in .env
   - builds SSL certificates using mkcert (mkcert MUST BE INSTALLED!) and copies
     to docker
