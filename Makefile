@@ -97,6 +97,9 @@ ssl-cert:
 
 # Example of a target that calls other targets
 fresh-start:
+	@echo "\033[1;36m🔧 If this is the first time running this, you may need to generate your hashes and salts here: https://roots.io/salts.html\033[0m"
+	@echo "\033[1;36m🔧 If you've already generated your hashes and salts, make sure they're in your .env file."
+	@echo "\033[1;36m🔧 Then you can run this target to start the Docker stack.\033[0m"
 	$(MAKE) down
 	$(MAKE) docker-clean
 	$(MAKE) full-rebuild
