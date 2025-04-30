@@ -124,6 +124,19 @@ Bedrock is a WordPress boilerplate from Roots that:
 
 6. **Version Control:**
 
+- This project is intended as a starting point for site customization, do NOT
+  push changes to it unless you are developing specifically for the site
+  boilerplate
+- it's intended that you 'break the link' between the remote and your local repo
+  and check in your customizations to a new remote, like:
+
+```
+git clone git@github.com:your-org/bedrock-sage-starter.git my-client-site 
+cd my-client-site 
+rm -rf .git 
+git init
+```
+
 - Commit your changes
 - Push to your repository
 - CI pipeline will run tests and linting
@@ -133,6 +146,10 @@ Bedrock is a WordPress boilerplate from Roots that:
   - .gitignore must be present and well-formed
   - PHP linting (via pint --test) must succeed
   - PHP Unit Tests - if any - must succeed
+- in GitHub/Gitea you must have a signing key (SSH preferred) configured
+- in GitHub/Gitea you must have a Repository secret called COMPOSER_AUTH
+  (located in your new repo > Settings > Secrets and Variables > Actions >
+  Repository secrets > New repository secret)
 
 7. **Deployment:**
 
