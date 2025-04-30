@@ -54,7 +54,7 @@ vite.config.js
 
 # === Editor / IDE files ===
 .idea/
-.vscode/
+.vscode/tasks.json
 *.code-workspace
 
 # === Docker / Local Dev Files ===
