@@ -150,6 +150,48 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
     $_SERVER['HTTPS'] = 'on';
 }
 
+/**
+ * Debug Log Rotation
+ * This runs in all environments where WP_DEBUG_LOG is enabled
+ */
+if (Config::get('WP_DEBUG_LOG')) {
+    $debug_log = env('WP_DEBUG_LOG_PATH') ? dirname(ABSPATH) . env('WP_DEBUG_LOG_PATH') : dirname(ABSPATH) . '/web/app/debug.log';
+    $max_log_size = env('WP_DEBUG_LOG_MAX_SIZE') ? (int)env('WP_DEBUG_LOG_MAX_SIZE') * 1024 * 1024 : 20 * 1024 * 1024; // Default 20MB
+    $max_backup_age = env('WP_DEBUG_LOG_MAX_AGE') ? (int)env('WP_DEBUG_LOG_MAX_AGE') : 30; // Default 30 days
+
+    // Rotate log if it exceeds size limit
+    if (file_exists($debug_log) && filesize($debug_log) > $max_log_size) {
+        try {
+            $backup_log = $debug_log . '-' . date('Y-m-d_H-i-s') . '.log';
+            if (!rename($debug_log, $backup_log)) {
+                error_log('Failed to rotate debug log: Could not rename file');
+            } else {
+                if (!file_put_contents($debug_log, '')) {
+                    error_log('Failed to rotate debug log: Could not create new log file');
+                }
+            }
+        } catch (Exception $e) {
+            error_log('Debug log rotation failed: ' . $e->getMessage());
+        }
+    }
+
+    // Clean up old backup logs
+    try {
+        $backup_files = glob($debug_log . '-*.log');
+        $now = time();
+
+        foreach ($backup_files as $file) {
+            if (filemtime($file) < ($now - ($max_backup_age * 24 * 60 * 60))) {
+                if (!unlink($file)) {
+                    error_log('Failed to delete old debug log: ' . $file);
+                }
+            }
+        }
+    } catch (Exception $e) {
+        error_log('Debug log cleanup failed: ' . $e->getMessage());
+    }
+}
+
 $env_config = __DIR__ . '/environments/' . WP_ENV . '.php';
 
 if (file_exists($env_config)) {
