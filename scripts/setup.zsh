@@ -13,7 +13,7 @@ NC="\033[0m" # No Color
 
 echo ""
 echo "${BLUE}🐳 Building and 🚀 Restarting Docker images...${NC}"
-make full-rebuild
+make fresh-start
 
 echo ""
 echo "${BLUE}🔒 Create SSL certificates and add them to the project${NC}"
