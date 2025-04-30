@@ -15,6 +15,10 @@ install:
 	cd web/app/themes/${WP_THEME_NAME} && composer install
 	cd web/app/themes/${WP_THEME_NAME} && npm install
 
+npm-clean:
+	cd web/app/themes/${WP_THEME_NAME} && npm run clean
+	cd web/app/themes/${WP_THEME_NAME} && npm install
+
 # Full rebuild (optional bonus)
 rebuild:
 	docker-compose down
