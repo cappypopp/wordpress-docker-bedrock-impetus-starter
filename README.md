@@ -1,6 +1,147 @@
-# Custom WordPress Site Based on Roots Bedrock using Sage Theme and Vite
+# WordPress Bedrock + Sage + Vite Starter
 
-## Notes
+🚀 A modern WordPress starter project powered by **Bedrock**, **Sage**,
+**Vite**, and **TailwindCSS**.
+
+This repo is intended to be used as a **template for starting new WordPress
+sites** quickly with a modern development workflow.
+
+---
+
+## 📌 About This Repo
+
+This repository is a **starter template** and should not be committed to
+directly for custom site development.
+
+When starting a new project:
+
+- ✅ Clone this repo (or better yet, use "Use this template" on GitHub)
+- ✅ Create a new GitHub repository for your project
+- ✅ Customize the project as needed
+- ✅ Commit your changes to your new project's repository
+
+---
+
+## 🛠️ Starting a New Project
+
+### Environment Requirements
+
+1. Ensure `mkcert` is installed (`brew install mkcert` on Mac) to generate SSL
+   certs for local development. You can also run the `./scripts/setup-mkcert.sh`
+   script if you're on a Mac if it's not once you've cloned the repo. It will
+   handle everything.
+2. Ensure you have a signing key set up in GitHub
+   (https://github.com/settings/keys). I use an SSH key but GPG should work. If
+   you don't have a signing key then the GitHub Action in
+   .github/workflows/ci.yml will fail on your commits as it requires signed
+   commits. If you don't want this ci.yml to run on commit, feel free to delete
+   it from your new local/remote repos.
+3. Make sure Docker is installed and running (on Mac, Docker Desktop is fine)
+   since this all runs in Docker containers!
+
+### Recommended (Template method)
+
+1. Click the **"Use this template"** button on GitHub.
+2. Create your new repository (this avoids Git history conflicts).
+3. Clone your new repository locally.
+
+### Alternative (Git Clone method)
+
+```bash
+git clone git@github.com:your-org/wordpress-bedrock-sage-starter.git my-new-site
+cd my-new-site
+rm -rf .git
+git init
+git remote add origin git@github.com:your-org/my-new-site.git
+git add .
+git commit -m "Initial commit from starter"
+git push -u origin main
+```
+
+**After either of the above:**
+
+1. Run the setup:
+
+```bash
+./setup.sh
+```
+
+2. Set up your .env file variables (see /.env file) since everything depends
+   upon them
+   - 🔒 YOU MUST Generate your keys here: https://roots.io/salts.html and put
+     them in your .env file!
+3. Check out the Makefile for a ton of utlity targets that do a number of things
+4. To start the Vite server, do a `make dev` or `npm run dev` from your theme
+   directory, but setup.sh will do this automatically for you the first time.
+5. If you make a mess, you can run `make fresh-start`. This will:
+
+- shut down any running Docker containers for this project
+- prune and clean up docker
+- rebuild docker images
+- start docker images
+- run composer/npm install steps in the images
+- wait for Wordpress to initialize
+- run initial setup of WordPress using .env variables (so you don't have to set
+  up WordPress each time)
+- run npm run dev to start vite server for hot reloading
+- this is what ./setup.sh runs the first time
+
+---
+
+## 🔑 Key directories to work with:
+
+- web/app/themes/your-theme-name/resources/ - Your source files
+- web/app/themes/your-theme-name/public/ - Compiled assets
+- web/app/themes/your-theme-name/resources/views/ - Blade templates
+- web/app/themes/your-theme-name/resources/functions.php - Theme functions
+
+---
+
+## **Deployment:**
+
+- Deploy to your staging/production environment
+- Run `make deploy` from project root
+- Make sure to set proper environment variables!
+
+---
+
+## 🧹 What NOT to do
+
+- ❌ Do not commit site-specific code back to this starter repo
+- ❌ Do not push commits to this repo unless improving the starter itself
+
+---
+
+## 📸 If you want to back up your database nightly
+
+- open to the .github/workflows/db-backup.yml file
+- uncomment the `schedule:` block and update the `cron` to whatever nightly (or
+  whenever) time you like
+- YOU MUST create the following GitHub repository secrets using the same values
+  so your nightly DB backup will work
+  - Go to GitHub > Repository (NOT ACCOUNT) Settings > Secrets and variables >
+    Actions > Repository secrets
+  - make the values match what you set in .env
+  - DB_NAME
+  - DB_USER
+  - DB_PORT
+  - DB_PASSWORD
+- Copy relevant values from your .env file to the
+  .github/workflows/db-backup.yml file, replacing all the 'get from .env or this
+  action will fail' lines with the appropriate values.
+- You have to do it this way since it uses docker-compose internally which you
+  don't want to pass .env to a GitHub action if it contains secrets. Yes, you
+  could split your .env but this is easier and takes 2 seconds.
+
+## 📦 Features Included
+
+- WordPress via Bedrock
+- Sage theme + Blade templating
+- Vite for JS/CSS bundling
+- Tailwind CSS
+- Laravel Blade components
+- Docker Compose dev environment (optional)
+- GitHub Actions for DB Backups (optional)
 
 ### Bedrock
 
@@ -38,138 +179,15 @@ Bedrock is a WordPress boilerplate from Roots that:
 | Manages WordPress + plugins via Composer   | Lives inside /web/app/themes/sage-theme       | Runs inside Sage (via Bud/Vite integration) |
 | .env config (DB, URLs)                     | Custom theme + Tailwind CSS, Blade templates  | Dev server for super-fast local dev         |
 
-## Initial Setup
+---
 
-- ensure `mkcert` is installed (`brew install mkcert` on Mac)
-- ensure you have a signing key set up in GitHub (I use 1Password:
-  https://developer.1password.com/docs/ssh/git-commit-signing/)
-- run ./setup.zsh
-- It will:
-  - create an .env file from .env.example if not present
-  - sets default database credentials
-  - `composer install`
-  - `cd web/app/themes/your-theme-name && composer install`
-  - `cd web/app/themes/your-theme-name && npm install`
-  - `docker-compose down`
-  - `docker-compose build --no-cache`
-  - `docker-compose up -d`
-  - `npm --prefix web/app/themes/your-theme-name run dev`
-  - resets wordpress username and password to one in .env
-  - builds SSL certificates using mkcert (mkcert MUST BE INSTALLED!) and copies
-    to docker
-- 🔒 YOU MUST Generate your WordPress authentication keys and salts here:
-  https://roots.io/salts.html and put them in the .env file!
-- YOU MUST set your .env file up - everything in the project uses/depends upon
-  it, except for:
-  - .vscode/launch.json: you need to hard-code your xdebug port number to match
-    what it is in .env
-- YOU MUST create the following GitHub repository secrets so your nightly DB
-  backup will work
-  - do this in GitHub > Repository (NOT ACCOUNT) Settings > Secrets and
-    variables > Actions > Repository secrets
-  - make the values match what you set in .env
-  - DB_NAME
-  - DB_USER
-  - DB_PORT
-  - DB_PASSWORD
-  - we have to do this or we'll be exposing our .env file publicly
+## 📄 License
 
-## Overview
+MIT — use freely for client or commercial projects.
 
-1. **Local Development Setup:**
+---
 
-- Make sure Docker is running (since you're using Docker)
-- Run `./setup.zsh`
-  - This will copy the .env.example file to .env if it doesn't exist
-  - YOU MUST CUSTOMIZE .env LOCALLY
-  - It then calls `./scripts/setup.zsh` which runs the `make fresh-start` target
-    and sets up HTTPS certificates
-- Details of `make fresh-start`. This will:
-  - shut down any running Docker containers for this project
-  - prune and clean up docker
-  - rebuild docker images
-  - start docker images
-  - run composer/npm install steps in the images
-  - wait for Wordpress to initialize
-  - run initial setup of WordPress using .env variables (so you don't have to
-    set up WordPress each time)
-  - run npm run dev to start vite server for hot reloading
-- Access your site at http://localhost:8443 (or whatever port you've configured
-  in WP_HTTPS_PORT in your .env file)
+## 📬 Contributing to the Starter (not project-specific sites)
 
-2. **Theme Development (Sage):**
-
-- Navigate to web/app/themes/your-theme-name
-- Run npm install to install theme dependencies (or use `make install`)
-- Run npm run dev to start the Vite development server (or use `make dev`)
-- This will give you:
-  - Hot Module Replacement (HMR)
-  - Live reloading
-  - Source maps
-  - Development optimizations
-
-3. **WordPress Development:**
-
-- Access WordPress admin at http://localhost/wp/wp-admin
-- Set up your theme in WordPress
-- Create necessary pages/posts
-- Install required plugins
-
-4. **Development Workflow:**
-
-- Create new templates in resources/views
-- Add styles in resources/styles
-- Add JavaScript in resources/scripts
-- Use Blade templating for PHP
-- Use Tailwind CSS (if configured) for styling
-- Use Alpine.js (if configured) for interactivity
-
-5. **Building for Production:**
-
-- Run npm run build to create production assets
-- This will:
-  - Minify CSS/JS
-  - Optimize images
-  - Generate production-ready assets
-
-6. **Version Control:**
-
-- This project is intended as a starting point for site customization, do NOT
-  push changes to it unless you are developing specifically for the site
-  boilerplate
-- it's intended that you 'break the link' between the remote and your local repo
-  and check in your customizations to a new remote, like:
-
-```
-git clone git@github.com:your-org/bedrock-sage-starter.git my-client-site 
-cd my-client-site 
-rm -rf .git 
-git init
-```
-
-- Commit your changes
-- Push to your repository
-- CI pipeline will run tests and linting
-- Requirements
-  - ci.yml will run on commits to remote repos
-  - commits must be signed
-  - .gitignore must be present and well-formed
-  - PHP linting (via pint --test) must succeed
-  - PHP Unit Tests - if any - must succeed
-- in GitHub/Gitea you must have a signing key (SSH preferred) configured
-- in GitHub/Gitea you must have a Repository secret called COMPOSER_AUTH
-  (located in your new repo > Settings > Secrets and Variables > Actions >
-  Repository secrets > New repository secret)
-
-7. **Deployment:**
-
-- Deploy to your staging/production environment
-- Run `make deploy`
-- Make sure to set proper environment variables
-
-## Key directories to work with:
-
-- web/app/themes/your-theme-name/resources/ - Your source files
-- web/app/themes/your-theme-name/public/ - Compiled assets
-- web/app/themes/your-theme-name/resources/views/ - Blade templates
-- web/app/themes/your-theme-name/resources/functions.php - Theme functions
+PRs welcome to improve the starter only (docs, tooling, boilerplate
+improvements).
