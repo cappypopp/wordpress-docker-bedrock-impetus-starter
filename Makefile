@@ -97,8 +97,7 @@ wp-admin-pw-reset:
 
 # SSL cert generation (optional bonus)
 ssl-cert:
-	cd docker/certs && mkcert localhost && mv localhost.pem localhost.crt && mv localhost-key.pem localhost.key
-
+	./scripts/setup-mkcert.sh
 # Example of a target that calls other targets
 fresh-start:
 	@echo "\033[1;36m🔧 If this is the first time running this, you may need to generate your hashes and salts here: https://roots.io/salts.html\033[0m"
