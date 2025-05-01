@@ -21,13 +21,13 @@ npm-clean:
 
 # Full rebuild (optional bonus)
 rebuild:
-	docker-compose down
+	$(MAKE) down
 	docker-compose up -d --build
 
 full-rebuild:
-	docker-compose down
+	$(MAKE) down
 	docker-compose build --no-cache
-	docker-compose up -d
+	$(MAKE) up
 
 up:
 	docker-compose up -d
@@ -36,7 +36,7 @@ down:
 	docker-compose down
 
 deploy:
-	./scripts/deploy.zsh
+	./scripts/deploy.sh
 
 docker-info:
 	@echo "\033[1;32m\n----STATUS------------------------------------\n\033[0m"
@@ -84,16 +84,16 @@ dev:
 	npm --prefix web/app/themes/${WP_THEME_NAME} run dev
 
 setup:
-	./scripts/setup.zsh
+	./scripts/setup.sh
 
 initial-wp-setup:
-	./scripts/initial-wp-setup.zsh
+	./scripts/initial-wp-setup.sh
 
 clear-caches:
 	./scripts/clear-caches.sh
 
 wp-admin-pw-reset:
-	./scripts/wp-admin-pw-reset.zsh
+	./scripts/wp-admin-pw-reset.sh
 
 # SSL cert generation (optional bonus)
 ssl-cert:
@@ -104,11 +104,12 @@ fresh-start:
 	@echo "\033[1;36m🔧 If this is the first time running this, you may need to generate your hashes and salts here: https://roots.io/salts.html\033[0m"
 	@echo "\033[1;36m🔧 If you've already generated your hashes and salts, make sure they're in your .env file."
 	@echo "\033[1;36m🔧 Then you can run this target to start the Docker stack.\033[0m"
-	$(MAKE) down
-	$(MAKE) docker-clean
-	$(MAKE) full-rebuild
+	./scripts/teardown.sh
+	docker-compose build --no-cache
+	$(MAKE) up
 	sleep 8  # Wait for WordPress to initialize
 	$(MAKE) install
+	$(MAKE) clear-caches
 	$(MAKE) initial-wp-setup
 	$(MAKE) dev
 
@@ -132,6 +133,6 @@ db-backup:
 	sleep 10
 
 	@echo "\033[1;32m💾 Dumping database...\033[0m"
-	./scripts/backup-db.zsh
+	./scripts/backup-db.sh
 
 	@echo "\033[1;32m✅ Backup complete. File saved in ./backup/\033[0m"
