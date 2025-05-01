@@ -37,7 +37,7 @@ jobs:
 
       - name: Generate Docker Compose env file (.env.ci)
         run: |
-          cat > .env.ci << 'EOF'
+          cat > .env.ci << EOF
           DB_NAME=${DB_NAME}
           DB_USER=${DB_USER}
           DB_PASSWORD=${DB_PASSWORD}
