@@ -1,11 +1,19 @@
-#! /opt/homebrew/bin/zsh
+#!/usr/bin/env bash
 
 # Configuration
 typeset -r BACKUP_DIR="../backups"
 typeset -i MAX_BACKUPS=7
-typeset -r DB_CONTAINER=$(docker ps --filter "name=db" --format "{{.Names}}" | head -n 1)
-typeset -r TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
-typeset -r BACKUP_FILE="${BACKUP_DIR}/backup_${TIMESTAMP}.sql.gz"
+DB_CONTAINER=""
+TIMESTAMP=""
+BACKUP_FILE=""
+
+DB_CONTAINER=$(docker ps --filter "name=db" --format "{{.Names}}" | head -n 1)
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_FILE="${BACKUP_DIR}/backup_${TIMESTAMP}.sql.gz"
+
+readonly DB_CONTAINER
+readonly TIMESTAMP
+readonly BACKUP_FILE
 
 # Ensure backup directory exists
 mkdir -p "$BACKUP_DIR"
@@ -24,8 +32,8 @@ if docker exec "$DB_CONTAINER" mysqldump \
 
     # Remove old backups if we have more than MAX_BACKUPS
     cd "$BACKUP_DIR" || exit 1
-    ls -t backup_*.sql.gz | tail -n +$((MAX_BACKUPS + 1)) | xargs -r rm
-    print "Old backups cleaned up"
+    find . -maxdepth 1 -name "backup_*.sql.gz" -printf '%T@ %p\n' | sort -nr | tail -n +$((MAX_BACKUPS + 1)) | cut -d' ' -f2- | xargs -r rm
+    echo "Old backups cleaned up"
 else
     print "Backup failed!"
     exit 1

@@ -83,7 +83,7 @@ jobs:
           echo "✅ DB environment variables are properly set."
 
       - name: Export Database
-        run: ./scripts/backup-db.zsh
+        run: ./scripts/backup-db.sh
 
       - name: Upload Database Backup
         uses: actions/upload-artifact@v4

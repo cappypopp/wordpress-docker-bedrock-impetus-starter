@@ -63,6 +63,16 @@ Bedrock is a WordPress boilerplate from Roots that:
   it, except for:
   - .vscode/launch.json: you need to hard-code your xdebug port number to match
     what it is in .env
+- YOU MUST create the following GitHub repository secrets so your nightly DB
+  backup will work
+  - do this in GitHub > Repository (NOT ACCOUNT) Settings > Secrets and
+    variables > Actions > Repository secrets
+  - make the values match what you set in .env
+  - DB_NAME
+  - DB_USER
+  - DB_PORT
+  - DB_PASSWORD
+  - we have to do this or we'll be exposing our .env file publicly
 
 ## Overview
 
