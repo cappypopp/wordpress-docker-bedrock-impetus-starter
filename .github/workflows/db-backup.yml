@@ -1,8 +1,9 @@
 name: Database Backup
 
 on:
-  schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight
+  # Uncomment this to run the backup daily at midnight
+  # schedule:
+  #   - cron: '0 0 * * *'  # Run daily at midnight
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
@@ -21,12 +22,12 @@ jobs:
       # these are required for the WordPress container to start since we use them in the docker-compose.yml file
       # but they are not needed for the DB backup. You could split the docker-compose.yml file into two files
       # and have a separate workflow for starting the WordPress container, but this is simpler.
-      XDEBUG_PORT: 9025
-      XDEBUG_IDEKEY: CURSOR
-      WP_HTTP_PORT: 8181
-      WP_HTTPS_PORT: 8443
-      WP_THEME_NAME: impetus
-      VITE_PORT: 5173
+      XDEBUG_PORT: 'get from .env or this action will fail'
+      XDEBUG_IDEKEY: 'get from .env or this action will fail'
+      WP_HTTP_PORT: 'get from .env or this action will fail'
+      WP_HTTPS_PORT: 'get from .env or this action will fail'
+      WP_THEME_NAME: 'get from .env or this action will fail'
+      VITE_PORT: 'get from .env or this action will fail'
 
     steps:
       - name: Checkout code
