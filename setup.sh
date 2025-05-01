@@ -18,4 +18,4 @@ cp -n .env.example .env || echo ".env already exists"
 echo "🔒 YOU MUST Generate your keys here: https://roots.io/salts.html and put them in the .env file!"
 
 # do the setup
-.scripts/setup.sh
+./scripts/setup.sh
