@@ -64,7 +64,7 @@ jobs:
         run: |
           echo "Waiting for MariaDB to be ready..."
           for i in {1..30}; do
-            if docker compose --env-file .env.ci exec -T db mysqladmin ping -u"${DB_USER}" --password="${DB_PASSWORD}" --silent; then
+            if docker compose --env-file .env.ci exec -T db mariadb-admin ping -h127.0.0.1 -u"$DB_USER" -p"$DB_PASSWORD" --silent; then
               echo "✅ Database is ready!"
               exit 0
             fi
