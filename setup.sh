@@ -7,15 +7,26 @@ set -euo pipefail
 # Since I already did this, I'm commenting it out
 # composer create-project roots/bedrock .
 
-# Copy and configure environment
-cp -n .env.example .env || echo ".env already exists"
+# Copy environment file if it doesn't exist
+if [ ! -f .env ] && cp -n .env.example .env; then
+    echo "⚠️  New .env file created from .env.example"
+    echo "❌ Please customize your .env file first, then run this script again."
+    echo "🔒 Generate your salts at: https://roots.io/salts.html and put them in the .env file!"
+    exit 1
+fi
+
+# Continue with setup only if .env exists and has been modified
+if [ -f .env ] && ! diff -q .env .env.example >/dev/null 2>&1; then
+    echo "✅ .env file exists and has been customized"
+    ./scripts/setup.sh
+else
+    echo "❌ .env file is identical to .env.example"
+    echo "Please customize your .env file first, then run this script again."
+    echo "🔒 Generate your salts at: https://roots.io/salts.html"
+    exit 1
+fi
 
 # Move into themes and install Sage
 # cd web/app/themes
 # composer create-project roots/sage your-sage-theme
 # cd ../../..
-
-echo "🔒 YOU MUST Generate your keys here: https://roots.io/salts.html and put them in the .env file!"
-
-# do the setup
-./scripts/setup.sh
