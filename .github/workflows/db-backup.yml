@@ -37,15 +37,28 @@ jobs:
 
       - name: Generate Docker Compose env file (.env.ci)
         run: |
-          cat > .env.ci << EOF
-          DB_NAME=${DB_NAME}
-          DB_USER=${DB_USER}
-          DB_PASSWORD=${DB_PASSWORD}
-          DB_PORT=${DB_PORT}
-          EOF
+          echo "DB_NAME=$DB_NAME
+          DB_USER=$DB_USER
+          DB_PASSWORD=$DB_PASSWORD
+          DB_PORT=$DB_PORT
+          XDEBUG_PORT=9025
+          XDEBUG_IDEKEY=CURSOR
+          WP_HTTP_PORT=8181
+          WP_HTTPS_PORT=8443
+          WP_THEME_NAME=impetus
+          VITE_PORT=5173" > .env.ci
+          
+          # Debug: Print the file contents (mask sensitive data)
+          echo "Generated .env.ci contents:"
+          sed 's/DB_PASSWORD=.*/DB_PASSWORD=***/' .env.ci
 
       - name: Start Docker Compose (DB only)
-        run: docker compose --env-file .env.ci up -d db
+        run: |
+          # Debug: Print Docker Compose version
+          docker compose version
+          
+          # Start DB with explicit environment file
+          docker compose --env-file .env.ci up -d db
 
       - name: Wait for Database to be ready
         run: |
