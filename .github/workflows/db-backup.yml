@@ -8,7 +8,16 @@ on:
 jobs:
   backup:
     runs-on: ubuntu-latest
-    
+
+    env:
+      # must be set in the repo secrets in repo settings > Secrets and Variables > Actions
+      # Yes, you are duplicating the env vars here, but it's a small price to pay for the
+      # ability to run the backup without having to have the .env file checked into the repo.
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,7 +28,7 @@ jobs:
       - name: Start Docker Compose
         run: docker compose up -d db
 
-      - name: Wait for DB
+      - name: Wait for DB to be ready
         run: sleep 15
 
       - name: Export Database
