@@ -35,11 +35,39 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Start Docker Compose
-        run: docker compose up -d db
+      - name: Generate Docker Compose env file (.env.ci)
+        run: |
+          cat > .env.ci << 'EOF'
+          DB_NAME=${DB_NAME}
+          DB_USER=${DB_USER}
+          DB_PASSWORD=${DB_PASSWORD}
+          DB_PORT=${DB_PORT}
+          EOF
 
-      - name: Wait for DB to be ready
-        run: sleep 15
+      - name: Start Docker Compose (DB only)
+        run: docker compose --env-file .env.ci up -d db
+
+      - name: Wait for Database to be ready
+        run: |
+          echo "Waiting for MariaDB to be ready..."
+          for i in {1..30}; do
+            if docker compose --env-file .env.ci exec -T db mysqladmin ping -u"${DB_USER}" --password="${DB_PASSWORD}" --silent; then
+              echo "✅ Database is ready!"
+              exit 0
+            fi
+            echo "⏳ Waiting (attempt $i)..."
+            sleep 2
+          done
+          echo "❌ Database did not become ready in time."
+          exit 1
+
+      - name: Validate DB Variables
+        run: |
+          if [[ -z "${DB_NAME}" || -z "${DB_USER}" || -z "${DB_PASSWORD}" || -z "${DB_PORT}" ]]; then
+            echo "❌ ERROR: One or more DB environment variables are not set!"
+            exit 1
+          fi
+          echo "✅ DB environment variables are properly set."
 
       - name: Export Database
         run: ./scripts/backup-db.zsh
