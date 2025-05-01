@@ -1,13 +1,13 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env bash
 
 # Setup Script for Bedrock WordPress + Docker Dev
 
-set -e
+set -euo pipefail
 
 # Color Codes
 BLUE="\033[1;34m"
 GREEN="\033[1;32m"
-YELLOW="\033[1;33m"
+# YELLOW="\033[1;33m"
 MAGENTA="\033[1;35m"
 NC="\033[0m" # No Color
 

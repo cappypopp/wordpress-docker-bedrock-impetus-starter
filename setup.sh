@@ -1,7 +1,7 @@
-#!/opt/homebrew/bin/zsh
+#!/usr/bin/env bash
 
-# Exit immediately on error
-set -e
+# Exit immediately on error, unused variables, and pipe failure
+set -euo pipefail
 
 # Install Bedrock
 # Since I already did this, I'm commenting it out
@@ -18,4 +18,4 @@ cp -n .env.example .env || echo ".env already exists"
 echo "🔒 YOU MUST Generate your keys here: https://roots.io/salts.html and put them in the .env file!"
 
 # do the setup
-.scripts/setup.zsh
+.scripts/setup.sh
