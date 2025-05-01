@@ -18,6 +18,16 @@ jobs:
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       DB_PORT: ${{ secrets.DB_PORT }}
 
+      # these are required for the WordPress container to start since we use them in the docker-compose.yml file
+      # but they are not needed for the DB backup. You could split the docker-compose.yml file into two files
+      # and have a separate workflow for starting the WordPress container, but this is simpler.
+      XDEBUG_PORT: 9025
+      XDEBUG_IDEKEY: CURSOR
+      WP_HTTP_PORT: 8181
+      WP_HTTPS_PORT: 8443
+      WP_THEME_NAME: impetus
+      VITE_PORT: 5173
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
