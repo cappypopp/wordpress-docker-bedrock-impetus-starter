@@ -90,7 +90,7 @@ initial-wp-setup:
 	./scripts/initial-wp-setup.zsh
 
 clear-caches:
-	./scripts/clear-caches.zsh
+	./scripts/clear-caches.sh
 
 wp-admin-pw-reset:
 	./scripts/wp-admin-pw-reset.zsh
