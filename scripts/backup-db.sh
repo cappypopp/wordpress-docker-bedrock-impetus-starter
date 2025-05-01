@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Configuration
-typeset -r BACKUP_DIR="../backups"
+BACKUP_DIR="backup"
 typeset -i MAX_BACKUPS=7
 DB_CONTAINER=""
 TIMESTAMP=""
