@@ -11,6 +11,7 @@ set -euo pipefail
 if [ ! -f .env ] && cp -n .env.example .env; then
     echo "⚠️  New .env file created from .env.example"
     echo "❌ Please customize your .env file first, then run this script again."
+    echo "Be sure that you use a different port for DB_PORT if you have multiple projects running on the same machine."
     echo "🔒 Generate your salts at: https://roots.io/salts.html and put them in the .env file!"
     exit 1
 fi
