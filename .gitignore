@@ -64,6 +64,7 @@ docker-compose.local.yml
 docker/certs/*
 logs/
 tmp/
+db-data/
 
 # === Backup Files ===
 backups/
