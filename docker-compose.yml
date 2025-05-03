@@ -51,3 +51,6 @@ services:
       - "${VITE_PORT}:${VITE_PORT}"
     depends_on:
       - php
+
+volumes:
+  db-data:
