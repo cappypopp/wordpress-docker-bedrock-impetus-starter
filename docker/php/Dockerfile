@@ -16,3 +16,9 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     mv wp-cli.phar /usr/local/bin/wp
 
 WORKDIR /var/www/html
+
+RUN ls -al
+
+# Update composer dependencies at runtime
+COPY ./php-entrypoint.sh /usr/local/bin/php-entrypoint.sh
+ENTRYPOINT ["php-entrypoint.sh"]
