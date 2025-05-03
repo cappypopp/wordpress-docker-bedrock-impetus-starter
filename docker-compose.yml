@@ -5,6 +5,10 @@ services:
     build: ./docker/php
     volumes:
       - .:/var/www/html
+      # This persists Composer's cache between container restarts
+      # This means Composer doesn't have to re-download packages every time the container restarts
+      # Significantly speeds up subsequent composer install or composer update commands
+      - /var/cache/composer # Composer Cache [See Anonymous Volumes]
     environment:
       - XDEBUG_MODE=debug
       - XDEBUG_CLIENT_PORT=${XDEBUG_PORT}
