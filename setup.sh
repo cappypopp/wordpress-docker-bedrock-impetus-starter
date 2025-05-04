@@ -27,6 +27,16 @@ else
     exit 1
 fi
 
+cd "web/app/themes/${WP_THEME_NAME}"
+echo ""
+echo "🐶 Installing husky..."
+npm install --save-dev husky
+# The init command simplifies setting up husky in a project.
+# It creates a pre-commit script in .husky/ and updates the
+# prepare script in package.json. Modifications can be made
+# later to suit your workflow.
+npx husky init
+
 # Move into themes and install Sage
 # cd web/app/themes
 # composer create-project roots/sage your-sage-theme
