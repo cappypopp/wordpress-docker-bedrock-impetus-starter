@@ -43,7 +43,6 @@ node_modules/
 yarn-error.log
 npm-debug.log
 pnpm-debug.log
-vite.config.js
 
 # Vite-specific (frontend assets)
 /web/app/themes/**/node_modules/
