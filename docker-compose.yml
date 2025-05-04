@@ -44,6 +44,33 @@ services:
       - "${DB_PORT}:${DB_PORT}"
     volumes:
       - ./db-data:/var/lib/mysql
+  theme:
+    build:
+      context: .
+      dockerfile: docker/theme/Dockerfile
+      # these are build-time arguments used by the Dockerfile
+      args:
+        WP_THEME_NAME: ${WP_THEME_NAME}
+        # change this to the version of sage you want to install in the .env file
+        SAGE_VERSION: ${SAGE_VERSION}
+        WP_ENV: ${WP_ENV}
+    volumes:
+      #- .:/var/www/html
+      # this is the directory where the theme is installed so changes made to files
+      # on the host are reflected in the container
+      - ./web/app/themes/${WP_THEME_NAME}:/var/www/html/web/app/themes/${WP_THEME_NAME}
+      # container’s node_modules directory is isolated from your host system, 
+      # preventing permission issues and avoiding polluting your local filesystem 
+      # with container-built modules.
+      - /var/www/html/web/app/themes/${WP_THEME_NAME}/node_modules
+    environment:
+      - WP_THEME_NAME=${WP_THEME_NAME}
+      - SAGE_VERSION=${SAGE_VERSION}
+      - WP_ENV=${WP_ENV}
+    depends_on:
+      - php
+    # Optionally, run and exit after setup (no long-running process needed)
+    command: ["true"]
 
   vite:
     image: node:18
@@ -55,6 +82,6 @@ services:
       - "${VITE_PORT}:${VITE_PORT}"
     depends_on:
       - php
-
+      - theme
 volumes:
   db-data:
